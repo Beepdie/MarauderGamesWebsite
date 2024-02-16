@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Web Prezentacija</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        body, h1, h2, h3, p, ul, li 
+        {
+            margin: 0;
+            padding: 0;
+        }
+
+        body 
+        {
+            background-color: #4a03ff00;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        header
+        {
+
+        }
+
+        .video-background 
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index:-1;
+            /*filter: blur(10px); /* Apply the blur effect */
+        }
+
+
+
+        main 
+        {
+            font-family: 'Roboto Mono', monospace;
+            flex: 1;
+            padding: 20px;
+            color: #cccccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .main-content 
+        {
+            display: flex;
+            align-items: stretch;
+            overflow: hidden;
+        }
+
+        .left-content 
+        {
+            flex: 1.5; /* Increase the flex value to take up more horizontal space */
+            padding: 20px;
+            display: flex;
+            color: #4a03ff;
+            flex-direction: column;
+        }
+
+        .picture-and-carousel 
+        {
+            display: flex;
+            flex-direction: row; /* Arrange children in a row */
+            align-items: flex-start; /* Align items to the top */
+            justify-content: space-between; /* Create space between the children */
+            margin: 20px; /* Add margin for spacing */
+        }
+
+        .right-content 
+        {
+            flex: 1; /* Increase the flex value to take up more horizontal space */
+            max-width: 600px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #cccccc;
+            font-family: 'Roboto Mono', monospace;
+            margin-left: auto; /* Add this line to push right content to the right */
+        }
+        .text-right
+        {
+            color: #cccccc;
+            text-align: justify;
+        }
+
+        .image 
+        {
+            max-width: 100%;
+            height: fit-content;
+            margin-bottom: -100px;
+        }
+
+        .video 
+        {
+            max-width: 100%;
+            height: fit-content;
+        }
+        .blurry-background 
+        {
+            position: relative; /* Ensure proper stacking context */
+            overflow: auto;
+        }
+
+        .blurry-overlay 
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0000007b; /* Semi-transparent black background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            border-radius: 10px; /* Add rounded corners if desired */
+            z-index: 0;
+        }
+
+        /* ... Carousel styles ... */
+
+        footer 
+        {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0000007b;
+            padding: 10px 0;
+            text-align: center;
+            color: #cccccc;
+        }
+
+        nav ul 
+        {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            background-color: #0000007b;
+            padding: 10px;
+        }
+
+        nav li 
+        {
+            margin: 0 10px;
+        }
+
+        nav a 
+        {
+            text-decoration: none;
+            color: #cccccc;
+            transition: color 0.3s;
+        }
+
+        nav a:hover 
+        {
+            color: #747373;
+        }
+
+        .carousel 
+        {
+            position: relative;
+            width: 100%;
+            max-height: fit-content;
+            max-width: 800px;
+            overflow: hidden;
+            margin-top: 20px;
+            font-family: 'Roboto Mono', monospace;
+            color: #7811ff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-image
+        {
+            margin:1;
+            max-width: 100%;
+            align-content: normal;
+        }
+
+        .carousel-inner 
+        {
+            display: flex;
+            transition: transform 0.3s ease-in-out;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .carousel-item 
+        {
+            min-width: 100%;
+            text-align: center;
+            padding: 50px;
+            background-color: #6f00ff;
+            box-shadow: 0px 0px 5px #6f00ff80;
+            margin-right: 20px;
+        }
+
+        .carousel-controls 
+        {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        .carousel-control 
+        {
+            cursor: pointer;
+            font-size: 24px;
+            color: #6f00ff;
+        }
+        /* Responsive styles */
+        @media (max-width: 768px) 
+        {
+            .main-content 
+            {
+                flex-direction: column;
+            }
+            .left-content, .right-content 
+            {
+                flex: 100%;
+            }
+            .carousel-item 
+            {
+                padding: 20px;
+            }
+        }
+
+        .pain-killer
+        {
+           text-align: center;
+           font-weight: bold;
+        }
+
+        .blurry-background 
+        {
+            background-color: #00000081; /* Semi-transparent black background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            padding: 25px; /* Adjust padding as needed */
+            border-radius: 10px; /* Add rounded corners if desired */
+            overflow: hidden; /* Ensure content doesn't overflow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #cccccc;
+            font-family: 'Roboto Mono', monospace;
+        }
+        @keyframes glowing 
+        {
+            0% 
+            {
+                text-shadow: 0 0 10px #cccccc, 0 0 20px #cccccc, 0 0 30px #cccccc;
+            }
+            50% 
+            {
+                text-shadow: 0 0 20px #cccccc, 0 0 30px #cccccc, 0 0 40px #cccccc;
+            }
+            100% 
+            {
+                text-shadow: 0 0 10px #cccccc, 0 0 20px #cccccc, 0 0 30px #cccccc;
+            }
+        }
+
+        .glowing-text 
+        {
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0 10px #cccccc, 0 0 20px #cccccc, 0 0 30px #cccccc;
+            animation: glowing 2s infinite;
+        }
+
+        .color-change 
+        {
+            color: #ffffff; /* Initial color */
+            transition: color 0.3s ease; /* Adding a smooth transition effect */
+        }
+
+        .color-change:hover 
+        {
+            color: #6b6b6b; /* Color on hover */
+        }    
+        .glowing-onhover-text 
+        {
+            font-size: 14px;
+            font-weight: bold;
+            color: #676767;
+            text-align: center;
+            transition: text-shadow 2ss infinite;
+        }
+
+        .glowing-text:hover 
+        {
+            text-shadow: 0 0 10px #cccccc, 0 0 20px #cccccc, 0 0 30px #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="glowing-text"></h1>
+        <nav>
+            <ul>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="index.html">HOME</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="Dominik_Mazzi_MarauderGamesFuturePlans.html">FUTURE PLANS</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="Dominik_Mazzi_MarauderGamesProjects.html">PROJECTS</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="index.html">ABOUT US</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="index.html">CONTACT</a></li></b>                
+                </div>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="main-content">
+        <div class="picture-and-carousel">
+            <div class="left-content">
+                               
+            </div>
+        </div>
+        
+        <div class="right-content">
+            <div class="blurry-background">
+                <div class="glowing-text">
+                    <h1><b>Our Projects</b></h1>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="margin-top: 20px;">
+                        <div class="text-right">
+                            <div class="pain-killer">
+                                <div class="glowing-text">
+                                    <h2><b>Pain Killer</b></h2>
+                                </div>
+                            </div>
+                            <p>
+                                Our only active project(for now), called <a class="color-change"><b>Pain Killer</b></a>, is an action shooter, based on the story of a military scout who is sent to the planet Mars to a military facility with which Earth has lost all contact. 
+                                <div class="hero-image"><img src="Dominik_Mazzi_StairsScifi.PNG" alt="" class="hero-image"></div>As time passes, the main character discovers bit by bit what it is about, that is, who/what is the cause of the problem, and that the hard way. Sneaking through the dark corridors, he realizes that something is watching him and lurking in the darkness. 
+                                It's up to him to decide if he wants to know more, or just go for the main mission, which is to turn on the backup generators, re-establish contact with earth, and explore the base and eliminate threats in case they exist. 
+                                <div class="hero-image"><img src="Dominik_Mazzi_MonsterPicture.PNG" alt="" class="hero-image"></div>During the adventure, the pace will constantly and drastically change, which means that at some moments the player will have to sneak and hide, while at others he will have to keep a high pace in order to survive. 
+                                The video game has been in development for a year, and it is not yet known when it will be perfected and released. A trailer will be released over the next year, so players can see what awaits them when the game is out.
+                                Until then, we've prepared just this for you, to prevent spoiling the enjoyment and experience that a video game should provide. In case you have questions or want to know more, contact us through Discord, and soon instagram and gmail will be available. 
+                            </p>
+                            
+                            
+                        </div>
+                        
+                    </div>
+                </div>                            
+                <video class="video" autoplay loop controls>
+                    <source src="Dominik_Mazzi_MenuVideo1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+    <video autoplay muted loop class="video-background">
+        <source src="Dominik_Mazzi_LabVideo2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <footer>
+        <nav>
+            <ul>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="index.html">HOME</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="Dominik_Mazzi_MarauderGamesFuturePlans.html">FUTURE PLANS</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="#">PROJECTS</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="index.html">ABOUT US</a></li></b>                
+                </div>
+                <div class="glowing-onhover-text">
+                    <li><b><a href="index.html">CONTACT</a></li></b>                
+                </div>
+            </ul>
+        </nav>
+    </footer>
+
+    
+    <script>
+        const carousel = document.querySelector('.carousel-inner');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const numItemsToMove = 1;
+        const itemWidth = carousel.children[0].clientWidth;
+        
+        let currentPosition = 0;
+    
+        prevButton.addEventListener('click', () => {
+            currentPosition += numItemsToMove * itemWidth;
+            if (currentPosition > 0) {
+                currentPosition = -(carousel.children.length - numItemsToMove) * itemWidth; // Adjusted value
+            }
+            carousel.style.transform = `translateX(${currentPosition}px)`;
+        });
+    
+        nextButton.addEventListener('click', () => {
+            currentPosition -= numItemsToMove * itemWidth;
+            if (currentPosition < -(carousel.children.length - numItemsToMove) * itemWidth) {
+                currentPosition = 0;
+            }
+            carousel.style.transform = `translateX(${currentPosition}px)`;
+        });
+    </script>   
+</body>
+</html>
